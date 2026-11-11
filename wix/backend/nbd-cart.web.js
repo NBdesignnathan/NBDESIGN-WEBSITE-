@@ -8,7 +8,8 @@ import { CATALOGUE, SIGN_TYPES, SIGN_CATS } from 'backend/nbd-catalogue';
 // Sends the product list and price rules to the configurator
 export const getStoreConfig = webMethod(Permissions.Anyone, async () => {
   return { products: PRODUCTS, tiers: TIERS, speed: SPEED, art: ART, designFee: DESIGN_FEE, minMm: MIN_MM, freight: FREIGHT, markup: MARKUP, orderMin: ORDER_MIN,
-    shopUrl: '/', // where the "All products" button goes: the page with your product tiles, e.g. '/' or '/shop'
+    shopUrl: '/',
+    orderUrl: '/order-signs', // your Order Signs page (used by the AI artwork helper) // where the "All products" button goes: the page with your product tiles, e.g. '/' or '/shop'
     catalogue: CATALOGUE, signTypes: SIGN_TYPES, signCats: SIGN_CATS };
 });
 

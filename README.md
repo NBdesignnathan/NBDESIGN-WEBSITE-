@@ -16,7 +16,7 @@ Online sign store for [nbdesign.net.au](https://nbdesign.net.au): instant pricin
 - `wix/backend/nbd-catalogue.js` – the sign catalogue designs
 - `wix/backend/nbd-trade*.js` – trade customer logins and private catalogues
 - `wix/service-plugin/` – Wix checkout add-ons: catalog pricing (`nbdSigns`) and the $120 minimum order (`nbdMinOrder`)
-- `wix/configurator.html`, `sign-catalogue.html`, `trade-catalogue.html` – Embed HTML panels
+- `wix/configurator.html`, `sign-catalogue.html`, `trade-catalogue.html`, `ai-artwork.html` – Embed HTML panels (order panel, sign catalogue, trade catalogue, AI artwork section + helper)
 - `wix/page-code/` – page code for the Order Signs, Sign Catalogue and Trade Catalogue pages
 - `wix/bloc-signs/` – BLOC trade signs and logo for the CMS
 

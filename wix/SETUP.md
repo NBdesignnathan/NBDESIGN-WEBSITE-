@@ -14,6 +14,8 @@ by your normal **Wix Stores** checkout and dashboard.
 | `service-plugin/nbdSigns.js` | Catalog service plugin main file (step 3). |
 | `service-plugin/nbdSigns-config.js` | Catalog service plugin config file (step 3). |
 | `service-plugin/nbdMinOrder.js` | Additional Fees service plugin: the $120 minimum order (step 13). |
+| `ai-artwork.html` | Embed HTML: AI artwork section and prompt/file helper (step 15). |
+| `page-code/ai-artwork-page.js` | Page code for the AI artwork section (step 15). |
 | `service-plugin/nbdMinOrder-config.js` | Additional Fees service plugin config file (step 13). |
 | `nbdesign-logo.png` | Your logo, trimmed with a transparent background. Use it in the Wix header (Add > Image). |
 | `configurator.html` | Pasted into an Embed HTML element on the Order Signs page. |
@@ -326,6 +328,22 @@ or "Proof to be emailed for approval" for jobs you design. Nothing to set up: it
 
 Optional extra: in your Wix checkout settings you can also turn on a policy agreement checkbox and link it
 to a page with your artwork/proof terms, so customers agree once more at payment.
+
+## 15. AI artwork section (optional, home page)
+
+`ai-artwork.html` is the "Made your design with AI? We'll print it." section plus the **AI artwork helper**:
+customers pick a product and size, get a ready-made prompt with the exact size (copy it, or open it straight
+in Claude or ChatGPT), then drop in the file their AI tool made to check it's sharp enough and the right shape.
+**Order this sign** opens the Order Signs page with that product and size already selected.
+
+1. On your home page add **Embed Code > Embed HTML**, choose **Code**, paste in `ai-artwork.html`.
+   Set its ID to `aiArtwork` and make it about 1,400px tall (it grows on phones, so check mobile view).
+2. Add `page-code/ai-artwork-page.js` to that page's code.
+3. If your Order Signs page isn't at `/order-signs`, change `orderUrl` in `backend/nbd-cart.web.js`.
+   **Get started** uses `shopUrl`.
+
+The file check happens in the customer's browser only; nothing is uploaded until they order.
+Customers upload the same file again on the Order Signs page (Wix can't pass a file between pages).
 
 ## Changing prices
 

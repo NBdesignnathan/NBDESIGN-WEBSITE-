@@ -14,11 +14,14 @@ $w.onReady(async function () {
   const upload = $w('#artworkUpload');
   const startProduct = wixLocationFrontend.query.product || '';
   const startDesign = wixLocationFrontend.query.design || '';
+  // From the AI artwork helper: ?size=&w=&h=&orient= preselects the size
+  const q = wixLocationFrontend.query;
+  const startSize = q.w && q.h ? { size: q.size, w: q.w, h: q.h, orient: q.orient } : null;
   let config = null;
   let busy = false;
 
   const sendInit = () => {
-    if (config) frame.postMessage({ type: 'init', config, product: startProduct, design: startDesign });
+    if (config) frame.postMessage({ type: 'init', config, product: startProduct, design: startDesign, size: startSize });
   };
 
   frame.onMessage(async (event) => {

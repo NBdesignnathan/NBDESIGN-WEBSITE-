@@ -223,7 +223,7 @@ const signDataURL = (d, W, H, T) => 'data:image/svg+xml;charset=utf-8,' + encode
 
 const catFor = (code) => (C.catalogue || []).find((d) => d.code === code);
 const catThumb = (d, W, H) => signSVG(d, W, H, C.signTypes).replace(`width="${W}" height="${H}"`, 'class="catsvg"');
-let startDesign = '';
+let startDesign = '', startSize = null;
 function selectProduct(id) {
   P = C.products.find((p) => p.id === id) || C.products[0];
   const first = P.mode === 'fixed' ? P.sizes[0] : { w: (P.presets[1] || P.presets[0])[0], h: (P.presets[1] || P.presets[0])[1] };
@@ -232,6 +232,14 @@ function selectProduct(id) {
   if (cfg.art === 'catalogue' && !P.catalogue) cfg.art = 'upload';
   if (startDesign && P.catalogue && catFor(startDesign)) { cfg.art = 'catalogue'; cfg.design = startDesign; }
   startDesign = '';
+  if (startSize) { // size chosen in the AI artwork helper; only accepted if it's one of this product's sizes
+    const sw = +startSize.w, sh = +startSize.h, port = startSize.orient === 'port';
+    const fits = (w, h) => (w === sw && h === sh) || (P.rotate && w === sh && h === sw);
+    if (P.mode === 'fixed') { const i = P.sizes.findIndex((z) => fits(z.w, z.h)); if (i >= 0) { cfg.size = i; cfg.w = P.sizes[i].w; cfg.h = P.sizes[i].h; } }
+    else { const pr = P.presets.find(([w, h]) => fits(w, h)); if (pr) { cfg.w = pr[0]; cfg.h = pr[1]; } }
+    if (P.rotate) { cfg.orient = port ? 'port' : 'land'; [cfg.w, cfg.h] = od(cfg.w, cfg.h); }
+    startSize = null;
+  }
   render();
   send({ type: 'art', art: cfg.art });
 }
@@ -358,7 +366,7 @@ function status(text, bad) { const el = $('#status'); if (el) { el.textContent =
 
 window.addEventListener('message', (e) => {
   const m = e.data || {};
-  if (m.type === 'init' && m.config && !C) { C = m.config; startDesign = String(m.design || ''); selectProduct(m.product); }
+  if (m.type === 'init' && m.config && !C) { C = m.config; startDesign = String(m.design || ''); startSize = m.size || null; selectProduct(m.product); }
   if (!C) return;
   if (m.type === 'file') { fileName = m.name || ''; if (cfg) cfg.approved = false; update(); }
   if (m.type === 'status') status(m.text);
