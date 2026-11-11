@@ -331,7 +331,7 @@ to a page with your artwork/proof terms, so customers agree once more at payment
 
 ## 15. AI artwork section (optional, home page)
 
-`ai-artwork.html` is the "Made your design with AI? We'll print it." section plus the **AI artwork helper**:
+`ai-artwork.html` is the "Made your design with AI? We'll print it." section, with the AI artwork helper built in:
 customers pick a product and size, get a ready-made prompt with the exact size (copy it, or open it straight
 in Claude or ChatGPT), then drop in the file their AI tool made to check it's sharp enough and the right shape.
 **Order this sign** opens the Order Signs page with that product and size already selected.
