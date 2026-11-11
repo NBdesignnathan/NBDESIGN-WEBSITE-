@@ -1,0 +1,6 @@
+title,code,company,width,height,material,price,active
+"Danger – Keep out, exclusion zone",BL01,BLOC,300,400,"Corflute, with write-on details panel",15.00,true
+PPE – Must be worn on this site,BL02,BLOC,600,450,Corflute,15.00,true
+Notice – All visitors must report to the site office,BL03,BLOC,600,450,Corflute,15.00,true
+Danger – Trucks entering site,BL04,BLOC,600,450,Corflute,15.00,true
+"Danger – Construction site, do not enter",BL05,BLOC,600,450,Corflute,15.00,true

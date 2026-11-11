@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NBDesign Sign Catalogue</title>
+<!-- Paste this whole file into a Wix "Embed HTML" element (Code mode) on the Sign Catalogue page. Designs come from backend/nbd-catalogue.js. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,800;1,900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#EFEFED; --panel:#FFFFFF; --ink:#0A0A0A; --muted:#55565A; --line:#D3D2CE; --peach:#F0BB9B;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+body{padding:16px}
+h1,h3{font-family:var(--f-display);font-style:italic;font-weight:900;margin:0;line-height:1.02;text-wrap:balance}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.label{font-family:var(--f-display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--muted)}
+.hint{font-size:.86rem;color:var(--muted)}
+.mono{font-family:var(--f-mono)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:18px 28px;flex-wrap:wrap;padding-bottom:14px;border-bottom:6px solid var(--ink);box-shadow:0 5px 0 var(--peach);margin-bottom:16px}
+.head h1{font-size:clamp(2.2rem,6vw,3.4rem)}
+.head p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.tools{display:flex;flex-direction:column;gap:10px;align-items:flex-start;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--panel);padding:7px 12px;cursor:pointer;font-weight:500}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--panel);box-shadow:inset 0 -4px 0 var(--peach)}
+input[type=search]{background:var(--panel);border:1.5px solid var(--line);padding:9px 12px;width:260px;max-width:100%}
+input[type=search]:focus{border-color:var(--ink);outline:none}
+.target{margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:10px}
+.catsvg{display:block;width:100%;height:auto;box-shadow:0 3px 10px rgba(0,0,0,.14)}
+.meta{display:flex;flex-direction:column;gap:2px;flex:1}
+.meta .mono{font-size:.78rem;color:var(--muted)}
+.meta h3{font-size:1.2rem}
+.use{background:var(--ink);color:var(--panel);border:0;padding:10px;font-family:var(--f-display);font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.use:hover{background:var(--peach);color:var(--ink)}
+.loading{padding:60px 0;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">Loading designs…</div></div>
+<script>
+// Draws a catalogue design as an SVG at the sign's real proportions (W x H in mm)
+function signSVG(d, W, H, T) {
+  const t = T[d.type] || T.info, m = Math.min(W, H);
+  const hb = Math.min(H * 0.32, W * 0.42), pad = m * 0.07, fr = m * 0.014;
+  const head = d.head || t.head || '';
+  const X = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const txt = (s, x, y, fs, col) => `<text x="${x}" y="${y}" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="${fs.toFixed(2)}" fill="${col}" text-anchor="middle" dominant-baseline="central">${X(s)}</text>`;
+  // approximate width of bold Arial capitals, in ems
+  const em = (s) => [...String(s)].reduce((w, c) => w + (c === ' ' ? 0.28 : '.,:I1J'.includes(c) ? 0.32 : 'MW'.includes(c) ? 0.86 : c === '→' ? 1 : 0.68), 0) || 1;
+  const fit = (s, maxW, maxH) => Math.min(maxH, maxW / em(s));
+  let g = `<rect width="${W}" height="${H}" fill="${t.bg}"/><rect x="0" y="0" width="${W}" height="${hb}" fill="${t.band}"/>`;
+  if (t.oval) {
+    const rx = Math.min(W * 0.4, hb * 1.9), ry = hb * 0.36;
+    g += `<ellipse cx="${W / 2}" cy="${hb / 2}" rx="${rx}" ry="${ry}" fill="${t.oval}"/>` + txt(head, W / 2, hb / 2, fit(head, rx * 1.45, ry * 1.15), t.headCol);
+  } else if (head) {
+    g += txt(head, W / 2, hb / 2, fit(head, W - 2 * pad, hb * 0.58), t.headCol);
+  }
+  if (t.rule) g += `<rect x="${pad}" y="${hb - m * 0.012}" width="${W - 2 * pad}" height="${m * 0.024}" fill="${t.text}"/>`;
+  const top = hb + pad * 0.7, bodyH = H - hb - pad * 1.7, maxW = W - 2 * pad;
+  // wrap long lines while there is spare height (portrait signs, long notices)
+  let lines = [...(d.lines || [])];
+  for (let k = 0; k < 8; k++) {
+    const wide = Math.max(...lines.map(em)), fsW = maxW / wide, fsH = bodyH / (lines.length * 1.2);
+    const i = lines.findIndex((l) => em(l) === wide);
+    if (fsH < fsW * 1.7 || !lines[i].includes(' ')) break;
+    const words = lines[i].split(' '); let best = 1, diff = 1e9;
+    for (let j = 1; j < words.length; j++) { const dd = Math.abs(em(words.slice(0, j).join(' ')) - em(words.slice(j).join(' '))); if (dd < diff) { diff = dd; best = j; } }
+    lines.splice(i, 1, words.slice(0, best).join(' '), words.slice(best).join(' '));
+  }
+  const n = Math.max(1, lines.length);
+  const fs = Math.min(bodyH / (n * 1.2), maxW / Math.max(...lines.map(em)), hb * 0.55), lh = fs * 1.2;
+  lines.forEach((l, i) => { g += txt(l, W / 2, top + (bodyH - lh * n) / 2 + lh * (i + 0.5), fs, t.text); });
+  g += `<rect x="${fr / 2}" y="${fr / 2}" width="${W - fr}" height="${H - fr}" fill="none" stroke="${t.frame}" stroke-width="${fr}"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${g}</svg>`;
+}
+const signDataURL = (d, W, H, T) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(signSVG(d, W, H, T));
+
+let D = null, cat = 'all', q = '';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const send = (m) => window.parent.postMessage(m, '*');
+const thumb = (d) => signSVG(d, 600, 450, D.signTypes).replace('width="600" height="450"', 'class="catsvg" role="img" aria-label="' + esc(d.code + ' ' + d.title) + '"');
+
+function shell() {
+  $('#app').innerHTML = `
+  <div class="head">
+    <div><span class="label">Artwork catalogue · free</span><h1>Sign catalogue</h1>
+      <p>Ready-made artwork for common signs. Pick a design and we print it at the size you choose, with no design fee. Need your phone number or logo added? Tell us in the notes when you order.</p></div>
+    <div class="tools">
+      <div class="chips" role="group" aria-label="Category">${[['all', 'All'], ...D.signCats].map(([k, l]) => `<button type="button" class="chip" data-cat="${k}" aria-pressed="${cat === k}">${esc(l)}</button>`).join('')}</div>
+      <input id="q" type="search" placeholder="Search, e.g. parking" aria-label="Search signs">
+    </div>
+  </div>
+  <p class="target">Designs go on: <strong>${esc(D.target.name)}</strong></p>
+  <div class="grid" id="grid"></div>
+  <p class="hint" style="margin-top:18px">Colours follow common Australian safety sign conventions. For signs that must meet a workplace standard such as AS 1319, ask us and we'll check the design before printing.</p>`;
+  document.querySelectorAll('[data-cat]').forEach((b) => b.onclick = () => { cat = b.dataset.cat; document.querySelectorAll('[data-cat]').forEach((x) => x.setAttribute('aria-pressed', x === b)); draw(); });
+  $('#q').oninput = (e) => { q = e.target.value; draw(); };
+  draw();
+}
+function draw() {
+  const t = q.trim().toLowerCase();
+  const list = D.catalogue.filter((d) => (cat === 'all' || d.cat === cat) && (!t || (d.code + ' ' + d.title + ' ' + (d.head || '') + ' ' + d.lines.join(' ')).toLowerCase().includes(t)));
+  $('#grid').innerHTML = list.length ? list.map((d) => `<article class="card">${thumb(d)}<div class="meta"><span class="mono">${d.code}</span><h3>${esc(d.title)}</h3></div><button type="button" class="use" data-use="${d.code}">Use this design</button></article>`).join('')
+    : `<p class="hint">No designs match "${esc(q)}". Try another word, or use our custom size request for something different.</p>`;
+  document.querySelectorAll('[data-use]').forEach((b) => b.onclick = () => { b.disabled = true; b.textContent = 'Opening…'; send({ type: 'choose', product: D.target.id, design: b.dataset.use }); });
+}
+window.addEventListener('message', (e) => { const m = e.data || {}; if (m.type === 'init' && m.data && !D) { D = m.data; shell(); } });
+send({ type: 'ready' });
+</script>
+</body>
+</html>

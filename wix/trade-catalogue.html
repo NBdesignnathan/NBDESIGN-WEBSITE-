@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NBDesign Trade Catalogue</title>
+<!-- Paste this whole file into a Wix "Embed HTML" element (Code mode) on the members-only Trade Catalogue page. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,800;1,900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#EFEFED; --panel:#FFFFFF; --ink:#0A0A0A; --muted:#55565A; --line:#D3D2CE; --steel:#B5B4B0; --peach:#F0BB9B; --mag:#C8195F; --ok:#1E7F4F;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+body{padding:16px}
+h1,h2,h3{font-family:var(--f-display);font-style:italic;font-weight:900;margin:0;line-height:1.02;text-wrap:balance}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.label{font-family:var(--f-display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--muted)}
+.msg{padding:60px 16px;text-align:center;color:var(--muted);max-width:52ch;margin:0 auto}
+.msg h2{font-size:2rem;color:var(--ink);margin-bottom:8px}
+
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:6px solid var(--ink);box-shadow:0 5px 0 var(--peach);margin-bottom:20px}
+.head h1{font-size:clamp(2rem,5vw,3rem)}
+.acct-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.acct-logo{background:#FFFFFF;display:block;flex:none;padding:10px 14px;box-shadow:0 0 0 3px var(--paper),0 0 0 7px var(--peach),6px 6px 0 7px var(--peach)}
+.acct-logo img{height:84px;width:auto;max-width:none;display:block}
+@media (max-width:520px){.acct-logo img{height:60px}}
+.acct{display:inline-block;background:var(--ink);color:var(--panel);font-family:var(--f-display);font-style:italic;font-weight:900;text-transform:uppercase;padding:0 .3em;box-shadow:0 0 0 3px var(--paper),0 0 0 6px var(--peach)}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search{background:var(--panel);border:1.5px solid var(--line);padding:9px 12px;min-width:0;width:260px;max-width:100%}
+.search:focus{border-color:var(--ink);outline:none}
+.cartlink{background:var(--peach);border:0;padding:10px 22px;font-family:var(--f-display);font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.cartlink[hidden]{display:none}
+
+.note{background:var(--ink);color:var(--panel);display:flex;justify-content:space-between;align-items:center;gap:18px 28px;flex-wrap:wrap;padding:18px 22px;margin-bottom:22px;box-shadow:6px 6px 0 var(--peach)}
+.note-msg{display:flex;flex-direction:column;gap:2px;min-width:0}
+.note-msg strong{font-family:var(--f-display);font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(1.3rem,3vw,1.75rem);line-height:1.05}
+.note-msg span{opacity:.8}
+.note-contact{display:flex;gap:12px;flex-wrap:wrap}
+.note-contact a{background:var(--peach);color:var(--ink);padding:8px 14px;display:flex;flex-direction:column;text-decoration:none;min-width:0}
+.note-contact a:hover{background:var(--panel)}
+.note-contact .label{font-size:.72rem;color:#3A2A1C}
+.note-contact .mono{font-size:1.05rem;font-weight:500;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column}
+.pic{aspect-ratio:4/3;background:var(--paper);display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--line);position:relative}
+.pic img{position:absolute;inset:16px;width:calc(100% - 32px);height:calc(100% - 32px);object-fit:contain;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+.pic .none{color:var(--muted);font-size:.85rem}
+.body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.code{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.card h3{font-size:1.3rem}
+.spec{font-size:.88rem;color:var(--muted)}
+.buy{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.price{font-family:var(--f-mono);font-size:1.15rem}
+.price small{font-family:var(--f-body);font-size:.75rem;color:var(--muted)}
+.stepper{display:flex;border:1.5px solid var(--line)}
+.stepper button{border:0;background:var(--paper);width:34px;cursor:pointer;font-size:1.1rem}
+.stepper input{border:0;width:52px;text-align:center;padding:6px 0}
+.add{width:100%;background:var(--ink);color:var(--panel);border:0;padding:10px;font-family:var(--f-display);font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.05em;font-size:1.05rem;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);margin-top:8px}
+.add:hover{background:var(--peach);color:var(--ink)}
+.add:disabled{opacity:.5;cursor:wait}
+.st{font-size:.85rem;min-height:1.3em}
+.st.ok{color:var(--ok)} .st.bad{color:var(--mag)}
+.partnerband{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:520px;margin:0 auto;padding:14px 16px;background:var(--peach);color:var(--ink);text-decoration:none}
+.partnerband:hover{filter:brightness(1.05)}
+.foot{margin-top:22px;font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="app"><div class="msg">Loading your catalogue…</div></div>
+<script>
+let D = null, filter = '';
+const $ = (s) => document.querySelector(s);
+const money = (n) => '$' + Number(n).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const send = (m) => window.parent.postMessage(m, '*');
+
+function shell(signs) {
+  $('#app').innerHTML = `
+  <div class="head">
+    <div class="acct-head">${D.logo ? `<span class="acct-logo"><img src="${esc(D.logo)}" alt="${esc(D.company)}"></span>` : ''}<div><span class="label">Trade catalogue${D.logo ? ' · ' + esc(D.company) : ''}</span><h1>${D.logo ? '' : `<span class="acct">${esc(D.company)}</span> `}Signs on file</h1></div></div>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="Search name or code" aria-label="Search signs" value="${esc(filter)}">
+      <button class="cartlink" id="cart" hidden>View cart</button>
+    </div>
+  </div>
+  <div class="note">
+    <div class="note-msg"><strong>Need a new sign or a change to one on file?</strong><span>Trade prices include GST.</span></div>
+    <div class="note-contact">
+      <a href="tel:0425420790" target="_top"><span class="label">Call</span><span class="mono">0425 420 790</span></a>
+      <a href="mailto:Sales@nbdesign.net.au" target="_top"><span class="label">Email</span><span class="mono">Sales@nbdesign.net.au</span></a>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>`;
+  $('#q').oninput = (e) => { filter = e.target.value; grid(); };
+  $('#cart').onclick = () => send({ type: 'cart' });
+  grid();
+}
+
+function grid() {
+  const f = filter.trim().toLowerCase();
+  const list = D.signs.filter((s) => !f || (s.title + ' ' + s.code + ' ' + s.material).toLowerCase().includes(f));
+  $('#grid').innerHTML = list.length ? list.map((s) => `
+    <article class="card" data-id="${esc(s.id)}">
+      <div class="pic">${s.image ? `<img src="${esc(s.image)}" alt="${esc(s.title)}" loading="lazy">` : '<span class="none">No photo yet</span>'}</div>
+      <div class="body">
+        <span class="code">${esc(s.code)}${D.admin ? ' · ' + esc(s.company) : ''}</span>
+        <h3>${esc(s.title)}</h3>
+        <span class="spec">${s.w && s.h ? `<span class="mono">${s.w}×${s.h}mm</span> · ` : ''}${esc(s.material)}</span>
+        <div class="buy">
+          <span class="price">${money(s.price)} <small>each</small></span>
+          <div class="stepper"><button data-d="-1" aria-label="Fewer">−</button><input type="number" min="1" max="1000" value="1" aria-label="Quantity of ${esc(s.title)}"><button data-d="1" aria-label="More">+</button></div>
+        </div>
+        <button class="add">Reorder</button>
+        <div class="st" aria-live="polite"></div>
+      </div>
+    </article>`).join('') : `<p class="msg">No signs match "${esc(filter)}".</p>`;
+  document.querySelectorAll('.card').forEach((card) => {
+    const inp = card.querySelector('input');
+    card.querySelectorAll('[data-d]').forEach((b) => b.onclick = () => { inp.value = Math.min(1000, Math.max(1, (parseInt(inp.value, 10) || 1) + +b.dataset.d)); });
+    card.querySelector('.add').onclick = (e) => {
+      e.target.disabled = true; status(card.dataset.id, 'Adding…');
+      send({ type: 'add', id: card.dataset.id, qty: Math.min(1000, Math.max(1, parseInt(inp.value, 10) || 1)) });
+    };
+  });
+}
+
+function status(id, text, cls) {
+  const card = document.querySelector(`.card[data-id="${CSS.escape(id)}"]`);
+  if (!card) return;
+  const st = card.querySelector('.st'); st.textContent = text; st.className = 'st' + (cls ? ' ' + cls : '');
+  if (cls) card.querySelector('.add').disabled = false;
+}
+
+window.addEventListener('message', (e) => {
+  const m = e.data || {};
+  if (m.type === 'init') {
+    D = m.data || {};
+    if (D.status === 'login') $('#app').innerHTML = '<div class="msg"><h2>Log in to see your catalogue</h2>Use the Log In button at the top of the page.</div><a class="partnerband" href="/trade-application" target="_top"><span><strong>Not a trade partner yet?</strong> Apply for a trade account</span><span aria-hidden="true">→</span></a>';
+    else if (D.status === 'pending') $('#app').innerHTML = '<div class="msg"><h2>Account being set up</h2>Your login works, but your trade account hasn\'t been linked yet. If you haven\'t applied yet, send an application and we\'ll link it once approved.</div><a class="partnerband" href="/trade-application" target="_top"><span><strong>Not a trade partner yet?</strong> Apply for a trade account</span><span aria-hidden="true">→</span></a>';
+    else if (!D.signs || !D.signs.length) $('#app').innerHTML = `<div class="msg"><h2>${esc(D.company || 'Your')} catalogue</h2>No signs on file yet. Call 0425 420 790 or email Sales@nbdesign.net.au to set them up.</div>`;
+    else shell();
+  }
+  if (m.type === 'added') { status(m.id, 'Added to cart.', 'ok'); const c = $('#cart'); if (c) c.hidden = false; }
+  if (m.type === 'error') status(m.id, m.text, 'bad');
+});
+send({ type: 'ready' });
+</script>
+</body>
+</html>
